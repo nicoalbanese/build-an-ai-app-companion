@@ -1,0 +1,54 @@
+---
+title: First Tool
+description: First Tool
+---
+
+```typescript title="app/actions.tsx"
+      getProducts: {
+        description:
+          "Get list of products for the company the user asks for. Only use when the user asks for products. If the user doesn't specify a company, be sure to ask.",
+        parameters: z.object({
+          company: z.object({
+            name: z.string(),
+          }),
+        }),
+        generate: async function* ({ company }) {
+          yield (
+            <div className="animate-pulse p-4 bg-neutral-50 rounded-md">
+              Loading {company.name[0].toUpperCase()}
+              {company.name.slice(1)} products...
+            </div>
+          );
+          const productsGeneration = await generateObject({
+            model: openai("gpt-3.5-turbo"),
+            schema: z.object({
+              products: z
+                .array(
+                  z.object({
+                    name: z.string(),
+                    description: z.string(),
+                    price: z.number(),
+                    type: z.enum(["one-off", "subscription"]),
+                  }),
+                )
+                .min(5),
+            }),
+            prompt: `Generate realistic products for ${company.name} the user has requested. Use specific model names.`,
+          });
+          history.done((messages: ServerMessage[]) => [
+            ...messages,
+            {
+              role: "assistant",
+              content: `Showing products (products: ${productsGeneration.object.products.map((p) => p.name).join(", ")})`,
+            },
+          ]);
+
+          return (
+            <AppleProducts
+              products={productsGeneration.object.products}
+              company={company.name}
+            />
+          );
+        },
+      },
+```

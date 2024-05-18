@@ -1,0 +1,12 @@
+{
+  "title": "Hello",
+  "pages": [
+    "---Project Setup---",
+    "getting-started",
+    "---AI SDK Fundamentals---",
+    "ai-sdk-core",
+    "ai-sdk-ui",
+    "---Building an Application---",
+    "ai-sdk-rsc"
+  ]
+}

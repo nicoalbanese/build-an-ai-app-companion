@@ -1,0 +1,4 @@
+{
+  "title": "AI SDK Core",
+  "pages": ["generate-text", "stream-text", "stream-object", "tools"]
+}
