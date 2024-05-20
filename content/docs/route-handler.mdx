@@ -12,14 +12,14 @@ First create a file at the following location: `app/api/chat/route.ts`.
 
 <Step>
 Define a POST request.
-```typescript
+```typescript title="app/api/chat/route.ts"
 export async function POST(request: Request) {}
 ```
 </Step>
 
 <Step>
 Pull in the `messages` from the request body.
-```typescript
+```typescript title="app/api/chat/route.ts"
 export async function POST(request: Request) {
   const { messages } = await request.json(); // [!code highlight]
 }
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
 <Step>
 Import and call `streamText`, passing in a model and the messages.
-```typescript
+```typescript title="app/api/chat/route.ts"
 import { streamText } from "ai"; // [!code highlight]
 import { openai } from "@ai-sdk/openai"; // [!code highlight]
 
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 
 <Step>
 Return the model's response using the `toAIStreamResponse` helper method on `result`.
-```typescript
+```typescript title="app/api/chat/route.ts"
 import { streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
 
