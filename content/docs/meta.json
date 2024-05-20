@@ -1,12 +1,22 @@
 {
   "title": "Hello",
   "pages": [
-    "---Project Setup---",
-    "getting-started",
-    "---AI SDK Fundamentals---",
-    "ai-sdk-core",
-    "ai-sdk-ui",
-    "---Building an Application---",
-    "ai-sdk-rsc"
+    "---Welcome---",
+    "introduction",
+    "---Calling an LLM---",
+    "project-one-setup",
+    "generate-text",
+    "stream-text",
+    "stream-object",
+    "tools",
+    "---Building a Chatbot---",
+    "project-two-setup",
+    "route-handler",
+    "use-chat",
+    "---Going Beyond Text---",
+    "stream-ui",
+    "first-tool",
+    "second-tool",
+    "---Where to next?---"
   ]
 }

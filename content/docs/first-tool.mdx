@@ -4,6 +4,7 @@ description: First Tool
 ---
 
 ```typescript title="app/actions.tsx"
+    tools: {
       getProducts: {
         description:
           "Get list of products for the company the user asks for. Only use when the user asks for products. If the user doesn't specify a company, be sure to ask.",
@@ -51,4 +52,5 @@ description: First Tool
           );
         },
       },
+    }
 ```

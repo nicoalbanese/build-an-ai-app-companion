@@ -1,0 +1,311 @@
+---
+title: Tools
+description: Tools
+---
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+<Steps>
+
+<Step>
+Open `src/tools.ts`. You should see the following code already:
+```typescript title="src/tools.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+  });
+}
+
+main().catch(console.error);
+````
+</Step>
+<Step>
+Define a tool called weather.
+```typescript title="src/tools.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+    tools: { // [!code highlight]
+      weather: {}, // [!code highlight]
+    }, // [!code highlight]
+  });
+}
+
+main().catch(console.error);
+````
+</Step>
+
+<Step>
+Provide a description for the tool.
+```typescript title="src/tools.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+    tools: {
+      weather: {
+        description: "Get the weather for the user's location", // [!code highlight]
+      },
+    },
+  });
+}
+
+main().catch(console.error);
+````
+<Callout type="info">
+Note: the description is very important because it is what the model will use to decide whether or not to use the tool.
+</Callout>
+
+</Step>
+
+<Step>
+Import Zod and define a Zod schema that describes the parameters necessary for the tool to run. Pass this schema to the `parameters` key.
+
+```typescript title="src/tools.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod"; // [!code highlight]
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+    tools: {
+      weather: {
+        description: "Get the weather for the user's location",
+        parameters: z.object({ // [!code highlight]
+          location: z.string().describe("the user's location"), // [!code highlight]
+        }), // [!code highlight]
+      },
+    },
+  });
+}
+
+main().catch(console.error);
+````
+<Callout type="info">
+Note: you can optionally describe your parameters using the `.describe` function. This will ensure the model has the appropriate context to produce a great generation.
+</Callout>
+
+</Step>
+
+<Step>
+Define an execute function. 
+
+```typescript title="src/tools.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod";
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+    tools: {
+      weather: {
+        description: "Get the weather for the user's location",
+        parameters: z.object({
+          location: z.string().describe("the user's location"),
+        }),
+        execute: async ({ location }) => {  // [!code highlight]
+          const temperature = Math.floor(Math.random() * 31); // await getWeather(location) // [!code highlight]
+          return { temperature }; // [!code highlight]
+        },
+      },
+    },
+  });
+}
+
+main().catch(console.error);
+````
+<Callout type="info">
+Note: This is the function that will be run if the model decides to use the tool.
+</Callout>
+
+</Step>
+
+
+<Step>
+Check if the model called the tool.
+
+```typescript title="src/tools.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod";
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+    tools: {
+      weather: {
+        description: "Get the weather for the user's location",
+        parameters: z.object({
+          location: z.string().describe("the user's location"),
+        }),
+        execute: async ({ location }) => {
+          const temperature = Math.floor(Math.random() * 31); // await getWeather(location)
+          return { temperature };
+        },
+      },
+    },
+  });
+
+  if (result.toolResults && result.toolCalls) { // [!code highlight]
+  } // [!code highlight]
+}
+
+main().catch(console.error);
+```
+<Callout type="info">
+Note: the SDK will not automatically send the Tool result to another model call to summarise.
+</Callout>
+
+</Step>
+
+<Step>
+Import and call `streamText` passing in the users' location and the weather of their current location (`toolResult`).
+
+```typescript title="src/tools.ts"
+// [!code word:streamText]
+import { openai } from "@ai-sdk/openai";
+import { generateText, streamText } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod";
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+    tools: {
+      weather: {
+        description: "Get the weather for the user's location",
+        parameters: z.object({
+          location: z.string().describe("the user's location"),
+        }),
+        execute: async ({ location }) => {
+          const temperature = Math.floor(Math.random() * 31); // await getWeather(location)
+          return { temperature };
+        },
+      },
+    },
+  });
+
+  if (result.toolCalls && result.toolResults) {
+    const joke = await streamText({ // [!code highlight]
+      model: openai("gpt-4o"), // [!code highlight]
+      prompt: `Tell me a joke that incorporates ${location} // [!code highlight]
+               and it's current temperature (${result.toolResults[0].result.temperature})`, // [!code highlight]
+    }); // [!code highlight]
+  }
+}
+
+main().catch(console.error);
+```
+</Step>
+<Step>
+Finally, iterate over the resulting `textStream` and write it to the console.
+
+```typescript title="src/tools.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText, streamText } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod";
+
+dotenv.config();
+
+async function main() {
+  const location = "London";
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: `You are a funny chatbot. users location: ${location}`,
+    tools: {
+      weather: {
+        description: "Get the weather for the user's location",
+        parameters: z.object({
+          location: z.string().describe("the user's location"),
+        }),
+        execute: async ({ location }) => {
+          const temperature = Math.floor(Math.random() * 31); // await getWeather(location)
+          return { temperature };
+        },
+      },
+    },
+  });
+
+  if (result.toolCalls && result.toolResults) {
+    const joke = await streamText({
+      model: openai("gpt-4o"),
+      prompt: `Tell me a joke that incorporates ${location}
+               and it's current temperature (${result.toolResults[0].result.temperature})`,
+    });
+
+    for await (const textPart of joke.textStream) { // [!code highlight]
+      process.stdout.write(textPart); // [!code highlight]
+    } // [!code highlight]
+  }
+}
+
+main().catch(console.error);
+```
+</Step>
+
+<Step>
+Run the script in the terminal, and see what happens.
+<Tabs items={['npm', 'pnpm']}>
+  <Tab value="npm">
+  ```bash
+  npx tsx src/tools.ts
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm tsx src/tools.ts
+  ```
+  </Tab>
+</Tabs>
+
+</Step>
+
+</Steps>
+
+

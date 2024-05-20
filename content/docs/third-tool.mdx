@@ -1,0 +1,81 @@
+---
+title: Third Tool
+description: Third Tool
+---
+
+```typescript
+      compareProducts: {
+        description: "Compare two products",
+        parameters: z.object({
+          productOne: z.object({
+            name: z.string(),
+          }),
+          productTwo: z.object({
+            name: z.string(),
+          }),
+        }),
+        generate: async function* ({ productTwo, productOne }) {
+          console.log("calling compare function");
+          yield <div>loading...</div>;
+          const productSchema = z.object({
+            name: z.string(),
+            features: z.array(z.string()),
+          });
+          const productFeatures = await generateObject({
+            model: openai("gpt-3.5-turbo"),
+            schema: z.object({
+              productOne: productSchema,
+              productTwo: productSchema,
+              comparison: z
+                .string()
+                .describe(
+                  "A short paragraph describing the differences between the two products and why you would pick one versus the other.",
+                ),
+            }),
+            prompt:
+              "Generate product feature list for " +
+              productOne.name +
+              " and for " +
+              productTwo.name,
+          });
+          const products = [
+            productFeatures.object.productOne,
+            productFeatures.object.productTwo,
+          ];
+          history.done((messages: ServerMessage[]) => [
+            ...messages,
+            {
+              role: "assistant",
+              content:
+                "Comparing two products:" +
+                `${productOne.name} and ${productTwo.name}`,
+            },
+          ]);
+
+          return (
+            <Card className="p-4">
+              <CardHeader>
+                Comparison between {productOne.name} and {productTwo.name}
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between">
+                  {products.map((product) => (
+                    <div key={product.name}>
+                      <h3 className="font-semibold text-lg">{product.name}</h3>
+                      <ul className="list-disc list-inside">
+                        {product.features.map((feature) => (
+                          <li key={feature}>{feature}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <p className="bg-neutral-100 p-4 rounded-md">
+                  {productFeatures.object.comparison}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        },
+      },
+```

@@ -1,0 +1,121 @@
+---
+title: Generate Text
+description: hello
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+<Steps>
+
+<Step>
+Open `src/generate-text.ts`. You should see the following code already:
+```typescript title="src/generate-text.ts"
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {}
+main().catch(console.error);
+
+````
+</Step>
+<Step>
+First, import and call the `generateText` function.
+```typescript title="src/generate-text.ts"
+import { generateText } from "ai"; // [!code highlight]
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await generateText({}); // [!code highlight]
+}
+main().catch(console.error);
+````
+
+</Step>
+<Step>
+Next, specify which model you want to use. First, import the official OpenAI provider from `@ai-sdk/openai`, and then pass it to the model key.
+
+```typescript title="src/generate-text.ts"
+import { openai } from "@ai-sdk/openai"; // [!code highlight]
+import { generateText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await generateText({
+    model: openai("gpt-4o"), // [!code highlight]
+  });
+}
+main().catch(console.error);
+```
+
+<Callout type="info">
+Note: the OpenAI provider will look for the `OPENAI_API_KEY` in your `.env` file by default.
+</Callout>
+</Step>
+
+<Step>
+Now, add a prompt.
+
+```typescript title="src/generate-text.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.", // [!code highlight]
+  });
+}
+main().catch(console.error);
+```
+
+</Step>
+
+<Step>
+Finally, log out the models response.
+
+```typescript title="src/generate-text.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+  });
+  console.log(result.text); // [!code highlight]
+}
+main().catch(console.error);
+```
+
+</Step>
+<Step>
+Run the script in the terminal, and see what happens.
+<Tabs items={['npm', 'pnpm']}>
+  <Tab value="npm">
+  ```bash
+  npx tsx src/generate-text.ts
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm tsx src/generate-text.ts
+  ```
+  </Tab>
+</Tabs>
+
+</Step>
+
+</Steps>

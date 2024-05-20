@@ -1,0 +1,61 @@
+---
+title: Project Setup
+description: Your first document
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+Welcome! In this section, we'll be exploring the fundamentals of AI SDK Core by building a few terminal programs.
+
+We'll be seeing how good of a comedian GPT can be! 
+
+Let's start by setting up our project.
+
+<Steps>
+<Step>
+Clone the following repository locally
+
+
+```bash 
+git clone https://github.com/nicoalbanese/ai-sdk-core-starter.git
+cd ai-sdk-core-starter
+```
+</Step>
+<Step>
+Install packages using your preferred package manager
+
+<Tabs items={['npm', 'pnpm']} persist>
+  <Tab value="npm">
+  ```bash
+  npm install
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm install
+  ```
+  </Tab>
+</Tabs>
+</Step>
+<Step>
+Copy the `.env.example` and rename it to `.env` file
+```bash
+cp .env.example .env
+```
+</Step>
+<Step>
+Add your OpenAI API Key to your `.env` file
+```
+OPENAI_API_KEY=sk-**********************
+```
+</Step>
+<Step>
+Run the following command in your terminal.
+```bash
+pnpm tsx src/index.ts
+```
+You should see your OpenAI API Key outputted to the terminal.
+</Step>
+</Steps>
+Great! You are now ready to go!

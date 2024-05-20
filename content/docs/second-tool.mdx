@@ -1,0 +1,35 @@
+---
+title: Second Tool
+description: Second Tool
+---
+
+```typescript title="app/actions.tsx"
+      getSpecificProduct: {
+        description:
+          "Select specific apple products. Use this if the user asks for more info on a product as well.",
+        parameters: z.object({
+          product: z.object({
+            name: z.string(),
+            description: z.string(),
+            price: z.number(),
+            type: z.enum(["subscription", "one-off"]),
+          }),
+        }),
+        generate: async function ({ product }) {
+          console.log("selecting specific product", product);
+          history.done((messages: ServerMessage[]) => [
+            ...messages,
+            {
+              role: "assistant",
+              content: "Selecting specific product:" + product.name,
+            },
+          ]);
+
+          return (
+            <div>
+              <h3>Youve selected {product.name}</h3>
+              <ProductCard product={product} />
+            </div>
+          );
+        },
+```

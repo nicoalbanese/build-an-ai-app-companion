@@ -1,0 +1,166 @@
+---
+title: Stream Object
+description: Stream Object
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+<Steps>
+
+<Step>
+Open `src/stream-object.ts`. You should see the following code already:
+
+```typescript title="src/stream-object.ts"
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await streamText({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+  });
+
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart);
+  }
+}
+
+main().catch(console.error);
+```
+
+</Step>
+
+<Step>
+First, change the `streamText` function to `streamObject`.
+```typescript title="src/stream-object.ts"
+// [!code word:streamObject]
+import { openai } from "@ai-sdk/openai";
+import { streamObject } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+const result = await streamObject({
+model: openai("gpt-4o"),
+prompt: "Tell me a joke.",
+});
+
+for await (const textPart of result.textStream) {
+process.stdout.write(textPart);
+}
+}
+
+main().catch(console.error);
+
+````
+</Step>
+<Step>
+
+Next, import [Zod](https://zod.dev), define a Zod schema and then pass it to the `schema` key.
+
+```typescript title="src/stream-object.ts"
+import { openai } from "@ai-sdk/openai";
+import { streamObject } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod"; // [!code highlight]
+
+dotenv.config();
+
+async function main() {
+  const result = await streamObject({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+    schema: z.object({ setup: z.string(), punchline: z.string() }), // [!code highlight]
+  });
+
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart);
+  }
+}
+
+main().catch(console.error);
+````
+
+</Step>
+
+<Step>
+Update the asynchronous for-loop to iterate over the `partialObjectStream` instead of `textStream`.
+
+```typescript title="src/stream-object.ts"
+import { openai } from "@ai-sdk/openai";
+import { streamObject } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod";
+
+dotenv.config();
+
+async function main() {
+  const result = await streamObject({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+    schema: z.object({ setup: z.string(), punchline: z.string() }),
+  });
+
+  for await (const partialObject of result.partialObjectStream) { // [!code highlight]
+    // [!code highlight]
+    process.stdout.write(textPart);
+  }
+}
+
+main().catch(console.error);
+```
+
+</Step>
+
+<Step>
+Finally, log out the model's response.
+
+```typescript title="src/stream-object.ts"
+import { openai } from "@ai-sdk/openai";
+import { streamObject } from "ai";
+import dotenv from "dotenv";
+import { z } from "zod";
+
+dotenv.config();
+
+async function main() {
+  const result = await streamObject({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+    schema: z.object({ setup: z.string(), punchline: z.string() }),
+  });
+
+  for await (const partialObject of result.partialObjectStream) {
+    console.clear(); // [!code highlight]
+    console.log(partialObject); // [!code highlight]
+  }
+}
+
+main().catch(console.error);
+```
+
+</Step>
+<Step>
+Run the script in the terminal, and see what happens.
+<Tabs items={['npm', 'pnpm']}>
+  <Tab value="npm">
+  ```bash
+  npx tsx src/stream-object.ts
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm tsx src/stream-object.ts
+  ```
+  </Tab>
+</Tabs>
+
+</Step>
+
+</Steps>

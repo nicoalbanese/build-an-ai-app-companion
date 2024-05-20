@@ -1,0 +1,133 @@
+---
+title: Stream Text
+description: Stream Text
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+Let's see how we can update our previous `generateText` example to use streaming.
+<Steps>
+
+<Step>
+Open `src/stream-text.ts`. You should see the following code already:
+```typescript title="src/stream-text.ts"
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+const result = await generateText({
+model: openai("gpt-4o"),
+prompt: "Tell me a joke.",
+});
+
+console.log(result.text);
+}
+
+main().catch(console.error);
+
+````
+</Step>
+
+<Step>
+First, change the `generateText` function to `streamText`.
+```typescript title="src/stream-text.ts"
+// [!code word:streamText]
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await streamText({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+  });
+
+  console.log(result.text);
+}
+
+main().catch(console.error);
+````
+
+</Step>
+<Step>
+Next, replace your `console.log` with an asynchronous for-loop and iterate over the resulting `textStream`.
+
+```typescript title="src/stream-text.ts"
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await streamText({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+  });
+
+  for await (const textPart of result.textStream) {
+    // [!code highlight]
+  } // [!code highlight]
+}
+
+main().catch(console.error);
+```
+
+</Step>
+
+<Step>
+Finally, write the text to the console.
+
+```typescript title="src/stream-text.ts"
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  const result = await streamText({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+  });
+
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart); // [!code highlight]
+  }
+}
+
+main().catch(console.error);
+```
+
+<Callout type="info">
+Note: you are using `process.stdout.write` rather than `console.log` because it does not add any new lines.
+</Callout>
+</Step>
+
+<Step>
+Run the script in the terminal, and see what happens.
+<Tabs items={['npm', 'pnpm']}>
+  <Tab value="npm">
+  ```bash
+  npx tsx src/stream-text.ts
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm tsx src/stream-text.ts
+  ```
+  </Tab>
+</Tabs>
+
+</Step>
+
+</Steps>
+
+You should see a joke streaming in the console just like ChatGPT!
