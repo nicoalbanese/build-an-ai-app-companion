@@ -2,6 +2,7 @@
 title: streamUI
 description: Your first document
 ---
+import { Step, Steps } from 'fumadocs-ui/components/steps';
 
 
 ```typescript title="app/actions.tsx"
@@ -12,7 +13,6 @@ import { openai } from "@ai-sdk/openai";
 import { ReactNode } from "react";
 import { z } from "zod";
 import { nanoid } from "nanoid";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export interface ServerMessage {
   role: "user" | "assistant";

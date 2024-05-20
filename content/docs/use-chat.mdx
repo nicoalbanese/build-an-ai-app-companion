@@ -2,14 +2,82 @@
 title: useChat
 description: Your first document
 ---
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
 
-```typescript title="app/page.tsx"
+<Steps>
+
+<Step>
+Open your root page and replace it's contents with the following:
+```tsx title="app/page.tsx"
+export default function ChatPage() {
+  return <div>Hello, world.</div>;
+}
+```
+</Step>
+
+<Step>
+Mark the page as a client component.
+```tsx title="app/page.tsx"
+"use client" // [!code highlight]
+
+export default function ChatPage() {
+  return <div>Hello, world.</div>;
+}
+```
+<Callout>
+Note: we are marking the page as a client component because we will be using hooks and interactivity.
+</Callout>
+</Step>
+
+<Step>
+Import and call `useChat`.
+```tsx title="app/page.tsx"
+"use client";
+
+import { useChat } from "ai/react"; // [!code highlight]
+
+export default function ChatPage() {
+  const { } = useChat(); // [!code highlight]
+  return <div>Hello, world.</div>;
+}
+```
+</Step>
+
+<Step>
+Destructure `messages` from `useChat` and then iterate over them in the UI.
+
+```tsx title="app/page.tsx"
 "use client";
 
 import { useChat } from "ai/react";
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages } = useChat(); // [!code highlight]
+  return (
+    <div>
+      {messages.map((m) => ( // [!code highlight]
+        <div key={m.id}> // [!code highlight]
+          {m.role === "user" ? "User: " : "AI: "} // [!code highlight]
+          {m.content} // [!code highlight]
+        </div> // [!code highlight]
+      ))} // [!code highlight]
+    </div>
+  );
+}
+```
+</Step>
+<Step>
+Destructure `input`, `handleInputChange`, and `handleSubmit` from `useChat`. Render a form and use the newly destructured items to handle the state.
+
+```tsx title="app/page.tsx"
+"use client";
+
+import { useChat } from "ai/react";
+
+export default function Chat() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat(); // [!code highlight]
   return (
     <div>
       {messages.map((m) => (
@@ -18,15 +86,39 @@ export default function Chat() {
           {m.content}
         </div>
       ))}
-      <form onSubmit={handleSubmit}>
-        <input
-          value={input}
-          placeholder="Say something..."
-          onChange={handleInputChange}
-        />
-      </form>
+      <form onSubmit={handleSubmit}> // [!code highlight]
+        <input // [!code highlight]
+          value={input} // [!code highlight]
+          placeholder="Say something..." // [!code highlight]
+          onChange={handleInputChange} // [!code highlight]
+        /> // [!code highlight]
+      </form> // [!code highlight]
     </div>
   );
 }
 ```
+</Step>
+
+<Step>
+Done! Run the dev server.
+<Tabs items={['npm', 'pnpm']} persist>
+  <Tab value="npm">
+  ```bash
+  npm run dev
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm run dev
+  ```
+  </Tab>
+</Tabs>
+
+</Step>
+<Step>
+Head to [localhost:3000](http://localhost:3000) and send a message to your chatbot!
+</Step>
+
+
+</Steps>
 

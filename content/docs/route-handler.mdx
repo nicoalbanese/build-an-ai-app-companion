@@ -2,19 +2,61 @@
 title: Route Handler
 description: Your first document
 ---
+import { Step, Steps } from 'fumadocs-ui/components/steps';
 
-```typescript title="app/api/chat/route.ts"
+<Steps>
+
+<Step>
+First create a file at the following location: `app/api/chat/route.ts`.
+</Step>
+
+<Step>
+Define a POST request.
+```typescript
+export async function POST(request: Request) {}
+```
+</Step>
+
+<Step>
+Pull in the `messages` from the request body.
+```typescript
+export async function POST(request: Request) {
+  const { messages } = await request.json(); // [!code highlight]
+}
+```
+</Step>
+
+<Step>
+Import and call `streamText`, passing in a model and the messages.
+```typescript
+import { streamText } from "ai"; // [!code highlight]
+import { openai } from "@ai-sdk/openai"; // [!code highlight]
+
+export async function POST(request: Request) {
+  const { messages } = await request.json();
+  const result = await streamText({ // [!code highlight]
+    model: openai("gpt-4o"), // [!code highlight]
+    messages, // [!code highlight]
+  }); // [!code highlight]
+}
+```
+</Step>
+
+<Step>
+Return the model's response using the `toAIStreamResponse` helper method on `result`.
+```typescript
 import { streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
 
 export async function POST(request: Request) {
   const { messages } = await request.json();
-  const stream = await streamText({
+  const result = await streamText({
     model: openai("gpt-4o"),
     system: "You are a helpful assistant.",
     messages,
   });
-  return stream.toAIStreamResponse();
+  return result.toAIStreamResponse(); // [!code highlight]
 }
 ```
-
+</Step>
+</Steps>

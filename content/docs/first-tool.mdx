@@ -3,7 +3,51 @@ title: First Tool
 description: First Tool
 ---
 
-```typescript title="app/actions.tsx"
+```tsx title="app/actions.tsx"
+    tools: {
+      getProducts: {
+        description:
+          "Get list of products for the company the user asks for. Only use when the user asks for products. If the user doesn't specify a company, be sure to ask.",
+        parameters: z.object({
+          company: z.object({
+            name: z.string(),
+          }),
+        }),
+        generate: async function* ({ company }) {
+          yield (
+            <div className="animate-pulse p-4 bg-neutral-50 rounded-md">
+              Loading {company.name[0].toUpperCase()}
+              {company.name.slice(1)} products...
+            </div>
+          );
+          const productsGeneration = await generateObject({
+            model: openai("gpt-3.5-turbo"),
+            schema: z.object({
+              products: z.array(z.string()).min(3),
+            }),
+            prompt: `Generate realistic products for ${company.name} the user has requested. Use specific model names.`,
+          });
+          history.done((messages: ServerMessage[]) => [
+            ...messages,
+            {
+              role: "assistant",
+              content: `Showing products (products: ${productsGeneration.object.products.map((p) => p).join(", ")})`,
+            },
+          ]);
+
+          return (
+            <ul>
+              {productsGeneration.object.products.map((p) => (
+                <li key={p}>{p}</li>
+              ))}
+            </ul>
+          );
+        },
+      },
+    }
+```
+
+```tsx title="app/actions.tsx"
     tools: {
       getProducts: {
         description:
@@ -54,3 +98,4 @@ description: First Tool
       },
     }
 ```
+
