@@ -9,8 +9,8 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 <Steps>
 
 <Step>
-Open `src/tools.ts`. You should see the following code already:
-```typescript title="src/tools.ts"
+Open `core/tools.ts`. You should see the following code already:
+```typescript title="core/tools.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -30,7 +30,7 @@ main().catch(console.error);
 </Step>
 <Step>
 Define a tool called weather.
-```typescript title="src/tools.ts"
+```typescript title="core/tools.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -54,7 +54,7 @@ main().catch(console.error);
 
 <Step>
 Provide a description for the tool.
-```typescript title="src/tools.ts"
+```typescript title="core/tools.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -85,7 +85,7 @@ Note: the description is very important because it is what the model will use to
 <Step>
 Import Zod and define a Zod schema that describes the parameters necessary for the tool to run. Pass this schema to the `parameters` key.
 
-```typescript title="src/tools.ts"
+```typescript title="core/tools.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -120,7 +120,7 @@ Note: you can optionally describe your parameters using the `.describe` function
 <Step>
 Define an execute function. 
 
-```typescript title="src/tools.ts"
+```typescript title="core/tools.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -160,7 +160,7 @@ Note: This is the function that will be run if the model decides to use the tool
 <Step>
 Check if the model called the tool.
 
-```typescript title="src/tools.ts"
+```typescript title="core/tools.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -202,7 +202,7 @@ Note: the SDK will not automatically send the Tool result to another model call 
 <Step>
 Import and call `streamText` passing in the users' location and the weather of their current location (`toolResult`).
 
-```typescript title="src/tools.ts"
+```typescript title="core/tools.ts"
 // [!code word:streamText]
 import { openai } from "@ai-sdk/openai";
 import { generateText, streamText } from "ai";
@@ -245,7 +245,7 @@ main().catch(console.error);
 <Step>
 Finally, iterate over the resulting `textStream` and write it to the console.
 
-```typescript title="src/tools.ts"
+```typescript title="core/tools.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText, streamText } from "ai";
 import dotenv from "dotenv";
@@ -291,15 +291,15 @@ main().catch(console.error);
 
 <Step>
 Run the script in the terminal, and see what happens.
-<Tabs items={['npm', 'pnpm']}>
+<Tabs id="install" items={['npm', 'pnpm']} persist>
   <Tab value="npm">
   ```bash
-  npx tsx src/tools.ts
+  npx tsx core/tools.ts
   ```
   </Tab>
   <Tab value="pnpm">
   ```bash
-  pnpm tsx src/tools.ts
+  pnpm tsx core/tools.ts
   ```
   </Tab>
 </Tabs>

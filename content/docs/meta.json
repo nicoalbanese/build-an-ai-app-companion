@@ -3,20 +3,21 @@
   "pages": [
     "---Welcome---",
     "introduction",
+    "project-setup",
     "---Calling an LLM---",
-    "project-one-setup",
     "generate-text",
     "stream-text",
     "stream-object",
     "tools",
     "---Building a Chatbot---",
-    "project-two-setup",
     "route-handler",
     "use-chat",
     "---Going Beyond Text---",
     "stream-ui",
     "first-tool",
     "second-tool",
-    "---Where to next?---"
+    "third-tool",
+    "---Where to next?---",
+    "getting-ready-for-production"
   ]
 }

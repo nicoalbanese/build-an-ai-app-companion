@@ -7,10 +7,15 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Callout } from 'fumadocs-ui/components/callout'
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs'
 
-<Callout>
-Note: this example uses the [same project](/docs/project-two-setup) that you set up in the previous section.
-</Callout>
+## Concepts
+To go beyond text, we'll be using a concept we explored in an earlier section, [tools](/docs/tools).
+Remember, tools are like programs we can give to the model, and the model can decide as and when to use based on the context of the conversation.
 
+With `ai/rsc`'s `streamUI` function, you can provide tools that return React components, rather than arbitrary values. 
+
+With `streamUI`, **the model becomes a dynamic router** that is able to understand the users' intention and display the relevant UI as required.
+
+## Implementation
 In this section, you will update your chatbot to use the `ai/rsc` library.
 
 <Steps>
@@ -57,6 +62,7 @@ export async function continueConversation(
 
       return <div>{content}</div>;
     },
+    tools: {}
   });
 
   return {
@@ -178,7 +184,7 @@ export default function Home() {
 </Step>
 <Step>
 Make sure your dev server is running.
-<Tabs items={['npm', 'pnpm']} persist>
+<Tabs id="install" items={['npm', 'pnpm']} persist>
   <Tab value="npm">
   ```bash
   npm run dev

@@ -4,6 +4,7 @@ description: First Tool
 ---
 import { Steps, Step } from "fumadocs-ui/components/steps"
 import { Callout } from "fumadocs-ui/components/callout"
+import {Tab, Tabs} from "fumadocs-ui/components/tabs"
 
 
 <Steps>
@@ -29,57 +30,102 @@ Create your first tool. This will be called `getProducts`.
       return <div>{content}</div>;
     },
     tools: { 
-      getProducts: {
-        description: "Get list of products for the company the user asks for.",
-        parameters: z.object({
-          company: z.object({
-            name: z.string(),
-          }),
-        }),
-        generate: async function* ({ company }) {
-          yield (
-            <div className="animate-pulse p-4 bg-neutral-50 rounded-md">
-              Loading {company.name[0].toUpperCase()}
-              {company.name.slice(1)} products...
-            </div>
-          );
-          const productsGeneration = await generateObject({
-            model: openai("gpt-3.5-turbo"),
-            schema: z.object({
-              products: z.array(z.string()).min(3),
-            }),
-            prompt: `Generate realistic products for ${company.name} the user has requested. Use specific model names.`,
-          });
-          history.done((messages: ServerMessage[]) => [
-            ...messages,
-            {
-              role: "assistant",
-              content: `Showing products (products: ${productsGeneration.object.products.map((p) => p).join(", ")})`,
-            },
-          ]);
-
-          return (
-            <ul>
-              {productsGeneration.object.products.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
-          );
-        },
-      },
+      getProducts: { // [!code highlight]
+        description: "Get list of products for the company the user asks for.", // [!code highlight]
+        parameters: z.object({// [!code highlight]
+          company: z.object({// [!code highlight]
+            name: z.string(),// [!code highlight]
+          }),// [!code highlight]
+        }),// [!code highlight]
+        generate: async function* ({ company }) {// [!code highlight]
+          yield (// [!code highlight]
+            <div className="animate-pulse p-4 bg-neutral-50 rounded-md">// [!code highlight]
+              Loading {company.name[0].toUpperCase()}// [!code highlight]
+              {company.name.slice(1)} products...// [!code highlight]
+            </div>// [!code highlight]
+          );// [!code highlight]
+          const productsGeneration = await generateObject({// [!code highlight]
+            model: openai("gpt-3.5-turbo"),// [!code highlight]
+            schema: z.object({// [!code highlight]
+              products: z.array(z.string()).min(3),// [!code highlight]
+            }),// [!code highlight]
+            prompt: `Generate realistic products for ${company.name} the user has requested. Use specific model names.`,// [!code highlight]
+          });// [!code highlight]
+          history.done((messages: ServerMessage[]) => [// [!code highlight]
+            ...messages,// [!code highlight]
+            {// [!code highlight]
+              role: "assistant",// [!code highlight]
+              content: `Showing products (products: ${productsGeneration.object.products.map((p) => p).join(", ")})`,// [!code highlight]
+            },// [!code highlight]
+          ]);// [!code highlight]
+          return (// [!code highlight]
+            <ul>// [!code highlight]
+              {productsGeneration.object.products.map((p) => (// [!code highlight]
+                <li key={p}>{p}</li>// [!code highlight]
+              ))}// [!code highlight]
+            </ul>// [!code highlight]
+          );// [!code highlight]
+        },// [!code highlight]
+      },// [!code highlight]
     }
   });
 
 // Rest of file
 ```
 <Callout>
-Note: We are using a generator function here (`function*`), which allows you to pause its execution and return a value, then resume from where it left off on the next call. This makes it useful for handling data streams, as you can fetch and return data from an asynchronous source like an API, then resume the function to fetch the next chunk when needed. By yielding values one at a time, generator functions enable efficient processing of streaming data without blocking the main thread.
+Note: We are using a generator function here (`function*`), which allows you to pause its execution and return a value, then resume from where it left off on the next call. This is useful for handling data streams, as you can fetch and return data from an asynchronous source like an API, then resume the function to fetch the next chunk when needed. By yielding values one at a time, generator functions enable efficient processing of streaming data without blocking the main thread.
+</Callout>
+</Step>
+
+<Step>
+Run the dev server and head over to http://localhost:3000 and ask the bot for Apple Products.
+<Tabs id="install" items={['npm', 'pnpm']} persist>
+  <Tab value="npm">
+  ```bash
+  npm run dev
+  ```
+  </Tab>
+  <Tab value="pnpm">
+  ```bash
+  pnpm run dev
+  ```
+  </Tab>
+</Tabs>
+
+You should see a list of Apple Products generated. Awesome, but that's just text! Let's create a component to display them.
+</Step>
+
+## Move Schemas
+<Step>
+To make it easier to share types throughout our application, let's move our product schema to a new file. Create a file at `lib/schemas/products.ts` and paste the following code:
+```typescript file="lib/schema/products.ts"
+import { z } from "zod";
+
+export const productSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  price: z.number(),
+  type: z.enum(["one-off", "subscription"]),
+});
+
+export const productsSchema = z.object({
+  products: z.array(productSchema).min(5),
+});
+
+export type Product = z.infer<typeof productSchema>;
+```
+<Callout>
+Note: we are also adding a few more properties to generate a `description`, `price`, and `type`.
 </Callout>
 </Step>
 
 ## Generate a Products Component
 <Step>
-Head to v0 and generate a component to display your "products". You could use a [carousel](https://v0.dev/t/VFdYPYy7iUy) for example. Install it with `npx v0 component-id` and name it `ProductCarousel`.
+Head to [v0](https://v0.dev) and generate a component to display your "products". You could use a [carousel](https://v0.dev/t/VFdYPYy7iUy) for example. 
+</Step>
+
+<Step>
+Install it with `npx v0 component-id` and name it `ProductCarousel`.
 </Step>
 
 <Step>
@@ -98,13 +144,13 @@ import {
   CarouselNext,
   Carousel,
 } from "@/components/ui/carousel";
+import { Product } from "@/lib/schemas/products";
 
 export function ProductCarousel({
   products,
 }: {
-  products?: { name: string; description: string }[];
+  products?: Product[];
 }) {
-  console.log(products);
   return (
     <Carousel className="w-full max-w-2xl">
       <CarouselContent>
@@ -131,7 +177,7 @@ export function ProductCarousel({
 </Step>
 
 <Step>
-Go back to your Server Action and update the generated products schema to generate a `description`, `price`, and `type`. Return the newly generated `ProductCarousel` component, passing in the generated products as a prop.
+Go back to your Server Action and update the products schema to the one defined in the previous step. Return the newly generated `ProductCarousel` component, passing in the generated products as a prop.
 
 
 ```tsx title="app/actions.tsx"
@@ -154,32 +200,27 @@ Go back to your Server Action and update the generated products schema to genera
           );
           const productsGeneration = await generateObject({
             model: openai("gpt-3.5-turbo"),
-            schema: z.object({
-              products: z
-                .array(
-                  z.object({
-                    name: z.string(),
-                    description: z.string(),
-                    price: z.number(),
-                    type: z.enum(["one-off", "subscription"]),
-                  }),
-                )
-                .min(5),
-            }),
+            schema: productsSchema, // [!code highlight]
             prompt: `Generate realistic products for ${company.name} the user has requested. Use specific model names.`,
           });
           history.done((messages: ServerMessage[]) => [
             ...messages,
             {
               role: "assistant",
-              content: `Showing products (products: ${productsGeneration.object.products.map((p) => p.name).join(", ")})`,
+              content: `Showing products (products: ${productsGeneration.object.products.map((p) => p.name).join(", ")})`, // [!code highlight]
             },
           ]);
-          return <ProductCarousel products={productsGeneration.object.products} />;
+          return <ProductCarousel products={productsGeneration.object.products} />; // [!code highlight]
         },
       },
     }
 // Rest of file
 ```
+<Callout>
+Remember to import `productsSchema`!
+</Callout>
+</Step>
+<Step>
+Head back to your browser and ask for Apple Products again.
 </Step>
 </Steps>

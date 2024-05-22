@@ -10,20 +10,19 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 <Steps>
 
 <Step>
-Open `src/generate-text.ts`. You should see the following code already:
-```typescript title="src/generate-text.ts"
+Open `core/generate-text.ts`. You should see the following code already:
+```typescript title="core/generate-text.ts"
 import dotenv from "dotenv";
 
 dotenv.config();
 
 async function main() {}
 main().catch(console.error);
-
 ````
 </Step>
 <Step>
 First, import and call the `generateText` function.
-```typescript title="src/generate-text.ts"
+```typescript title="core/generate-text.ts"
 import { generateText } from "ai"; // [!code highlight]
 import dotenv from "dotenv";
 
@@ -39,7 +38,7 @@ main().catch(console.error);
 <Step>
 Next, specify which model you want to use. First, import the official OpenAI provider from `@ai-sdk/openai`, and then pass it to the model key.
 
-```typescript title="src/generate-text.ts"
+```typescript title="core/generate-text.ts"
 import { openai } from "@ai-sdk/openai"; // [!code highlight]
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -62,7 +61,7 @@ Note: the OpenAI provider will look for the `OPENAI_API_KEY` in your `.env` file
 <Step>
 Now, add a prompt.
 
-```typescript title="src/generate-text.ts"
+```typescript title="core/generate-text.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -83,7 +82,7 @@ main().catch(console.error);
 <Step>
 Finally, log out the models response.
 
-```typescript title="src/generate-text.ts"
+```typescript title="core/generate-text.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -103,15 +102,15 @@ main().catch(console.error);
 </Step>
 <Step>
 Run the script in the terminal, and see what happens.
-<Tabs items={['npm', 'pnpm']}>
+<Tabs id="install" items={['npm', 'pnpm']} persist>
   <Tab value="npm">
   ```bash
-  npx tsx src/generate-text.ts
+  npx tsx core/generate-text.ts
   ```
   </Tab>
   <Tab value="pnpm">
   ```bash
-  pnpm tsx src/generate-text.ts
+  pnpm tsx core/generate-text.ts
   ```
   </Tab>
 </Tabs>

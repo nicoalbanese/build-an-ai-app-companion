@@ -11,8 +11,8 @@ Let's see how we can update our previous `generateText` example to use streaming
 <Steps>
 
 <Step>
-Open `src/stream-text.ts`. You should see the following code already:
-```typescript title="src/stream-text.ts"
+Open `core/stream-text.ts`. You should see the following code already:
+```typescript title="core/stream-text.ts"
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
@@ -20,22 +20,21 @@ import dotenv from "dotenv";
 dotenv.config();
 
 async function main() {
-const result = await generateText({
-model: openai("gpt-4o"),
-prompt: "Tell me a joke.",
-});
+  const result = await generateText({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+  });
 
-console.log(result.text);
+  console.log(result.text);
 }
 
 main().catch(console.error);
-
 ````
 </Step>
 
 <Step>
 First, change the `generateText` function to `streamText`.
-```typescript title="src/stream-text.ts"
+```typescript title="core/stream-text.ts"
 // [!code word:streamText]
 import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
@@ -59,7 +58,7 @@ main().catch(console.error);
 <Step>
 Next, replace your `console.log` with an asynchronous for-loop and iterate over the resulting `textStream`.
 
-```typescript title="src/stream-text.ts"
+```typescript title="core/stream-text.ts"
 import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
 import dotenv from "dotenv";
@@ -72,8 +71,7 @@ async function main() {
     prompt: "Tell me a joke.",
   });
 
-  for await (const textPart of result.textStream) {
-    // [!code highlight]
+  for await (const textPart of result.textStream) { // [!code highlight]
   } // [!code highlight]
 }
 
@@ -85,7 +83,7 @@ main().catch(console.error);
 <Step>
 Finally, write the text to the console.
 
-```typescript title="src/stream-text.ts"
+```typescript title="core/stream-text.ts"
 import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
 import dotenv from "dotenv";
@@ -113,15 +111,15 @@ Note: you are using `process.stdout.write` rather than `console.log` because it 
 
 <Step>
 Run the script in the terminal, and see what happens.
-<Tabs items={['npm', 'pnpm']}>
+<Tabs id="install" items={['npm', 'pnpm']} persist>
   <Tab value="npm">
   ```bash
-  npx tsx src/stream-text.ts
+  npx tsx core/stream-text.ts
   ```
   </Tab>
   <Tab value="pnpm">
   ```bash
-  pnpm tsx src/stream-text.ts
+  pnpm tsx core/stream-text.ts
   ```
   </Tab>
 </Tabs>

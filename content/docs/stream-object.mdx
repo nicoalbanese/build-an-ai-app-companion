@@ -10,9 +10,9 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 <Steps>
 
 <Step>
-Open `src/stream-object.ts`. You should see the following code already:
+Open `core/stream-object.ts`. You should see the following code already:
 
-```typescript title="src/stream-object.ts"
+```typescript title="core/stream-object.ts"
 import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
 import dotenv from "dotenv";
@@ -37,7 +37,7 @@ main().catch(console.error);
 
 <Step>
 First, change the `streamText` function to `streamObject`.
-```typescript title="src/stream-object.ts"
+```typescript title="core/stream-object.ts"
 // [!code word:streamObject]
 import { openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
@@ -46,14 +46,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 async function main() {
-const result = await streamObject({
-model: openai("gpt-4o"),
-prompt: "Tell me a joke.",
-});
+  const result = await streamObject({
+    model: openai("gpt-4o"),
+    prompt: "Tell me a joke.",
+  });
 
-for await (const textPart of result.textStream) {
-process.stdout.write(textPart);
-}
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart);
+  }
 }
 
 main().catch(console.error);
@@ -64,7 +64,7 @@ main().catch(console.error);
 
 Next, import [Zod](https://zod.dev), define a Zod schema and then pass it to the `schema` key.
 
-```typescript title="src/stream-object.ts"
+```typescript title="core/stream-object.ts"
 import { openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
 import dotenv from "dotenv";
@@ -92,7 +92,7 @@ main().catch(console.error);
 <Step>
 Update the asynchronous for-loop to iterate over the `partialObjectStream` instead of `textStream`.
 
-```typescript title="src/stream-object.ts"
+```typescript title="core/stream-object.ts"
 import { openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
 import dotenv from "dotenv";
@@ -121,7 +121,7 @@ main().catch(console.error);
 <Step>
 Finally, log out the model's response.
 
-```typescript title="src/stream-object.ts"
+```typescript title="core/stream-object.ts"
 import { openai } from "@ai-sdk/openai";
 import { streamObject } from "ai";
 import dotenv from "dotenv";
@@ -148,15 +148,15 @@ main().catch(console.error);
 </Step>
 <Step>
 Run the script in the terminal, and see what happens.
-<Tabs items={['npm', 'pnpm']}>
+<Tabs id="install" items={['npm', 'pnpm']} persist>
   <Tab value="npm">
   ```bash
-  npx tsx src/stream-object.ts
+  npx tsx core/stream-object.ts
   ```
   </Tab>
   <Tab value="pnpm">
   ```bash
-  pnpm tsx src/stream-object.ts
+  pnpm tsx core/stream-object.ts
   ```
   </Tab>
 </Tabs>
