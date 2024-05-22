@@ -95,7 +95,10 @@ Remember to mark it as a client component!
 </Callout>
 </Step>
 <Step>
-Generate a detailed product card component with v0. Here is an [example](https://v0.dev/r/iVGYR8V8wNH). Add it to your project, calling it `ProductCard`.
+Let's generate a detailed product card component with v0. We can use this [example](https://v0.dev/r/iVGYR8V8wNH) and add it to your project, with the following command. Call it `ProductCard`.
+```bash
+npx v0 add NscAFoMGpdh
+```
 </Step>
 <Step>
 Update the component to accept the `product` as a prop.
@@ -106,31 +109,31 @@ Update the component to accept the `product` as a prop.
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import { Button } from "@/components/ui/button";
-import { Product } from "@/lib/schemas/products";
+import { Product } from "@/lib/schemas/products"; // [!code highlight]
 
 export function ProductCard({
-  product,
-}: {
-  product: Product;
+  product,// [!code highlight]
+}: {// [!code highlight]
+  product: Product;// [!code highlight]
 }) {
   return (
     <div className="flex flex-col items-start gap-6 bg-white p-8 shadow-lg rounded-lg dark:bg-gray-950">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold tracking-tight">{product.name}</h2>
+        <h2 className="text-2xl font-bold tracking-tight">{product.name}</h2>// [!code highlight]
         <p className="text-gray-500 dark:text-gray-400">
-          {product.description}
+          {product.description}// [!code highlight]
         </p>
       </div>
       <div className="flex items-baseline gap-2">
-        <span className="text-4xl font-bold">${product.price}</span>
-        {product.type === "subscription" ? (
-          <span className="text-gray-500 dark:text-gray-400 text-sm">
-            /month
-          </span>
-        ) : null}
+        <span className="text-4xl font-bold">${product.price}</span>// [!code highlight]
+        {product.type === "subscription" ? (// [!code highlight]
+          <span className="text-gray-500 dark:text-gray-400 text-sm">// [!code highlight]
+            /month// [!code highlight]
+          </span>// [!code highlight]
+        ) : null}// [!code highlight]
       </div>
       <Button className="w-full">
-        {product.type === "subscription" ? "Subscribe" : "Buy"} Now
+        {product.type === "subscription" ? "Subscribe" : "Buy"} Now// [!code highlight]
       </Button>
     </div>
   );

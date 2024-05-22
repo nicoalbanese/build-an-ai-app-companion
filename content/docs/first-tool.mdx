@@ -98,7 +98,7 @@ You should see a list of Apple Products generated. Awesome, but that's just text
 ## Move Schemas
 <Step>
 To make it easier to share types throughout our application, let's move our product schema to a new file. Create a file at `lib/schemas/products.ts` and paste the following code:
-```typescript file="lib/schema/products.ts"
+```typescript title="lib/schemas/products.ts"
 import { z } from "zod";
 
 export const productSchema = z.object({
@@ -121,11 +121,12 @@ Note: we are also adding a few more properties to generate a `description`, `pri
 
 ## Generate a Products Component
 <Step>
-Head to [v0](https://v0.dev) and generate a component to display your "products". You could use a [carousel](https://v0.dev/t/VFdYPYy7iUy) for example. 
-</Step>
+We can use [v0](https://v0.dev) to generate a component to display your "products". Let's use this [carousel](https://v0.dev/t/VFdYPYy7iUy). 
 
-<Step>
-Install it with `npx v0 component-id` and name it `ProductCarousel`.
+Install it with the following command and name it `ProductCarousel`.
+```bash
+npx v0 add VFdYPYy7iUy
+```
 </Step>
 
 <Step>
@@ -144,28 +145,28 @@ import {
   CarouselNext,
   Carousel,
 } from "@/components/ui/carousel";
-import { Product } from "@/lib/schemas/products";
+import { Product } from "@/lib/schemas/products"; // [!code highlight]
 
 export function ProductCarousel({
-  products,
-}: {
-  products?: Product[];
+  products, // [!code highlight]
+}: {// [!code highlight]
+  products: Product[];// [!code highlight]
 }) {
   return (
     <Carousel className="w-full max-w-2xl">
       <CarouselContent>
-        {products?.map((p) => (
-          <CarouselItem key={p.name}>
-            <Card className="flex flex-col items-center gap-4 p-6">
-              <div className="text-center">
-                <h3 className="text-xl font-semibold">{p.name}</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  {p.description}
-                </p>
-              </div>
-            </Card>
-          </CarouselItem>
-        ))}
+        {products.map((p) => (// [!code highlight]
+          <CarouselItem key={p.name}>// [!code highlight]
+            <Card className="flex flex-col items-center gap-4 p-6">// [!code highlight]
+              <div className="text-center">// [!code highlight]
+                <h3 className="text-xl font-semibold">{p.name}</h3>// [!code highlight]
+                <p className="text-gray-500 dark:text-gray-400">// [!code highlight]
+                  {p.description}// [!code highlight]
+                </p>// [!code highlight]
+              </div>// [!code highlight]
+            </Card>// [!code highlight]
+          </CarouselItem>// [!code highlight]
+        ))}// [!code highlight]
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />

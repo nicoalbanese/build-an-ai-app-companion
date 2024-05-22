@@ -8,7 +8,16 @@ In this section, we will add further interactivity to your streamed components.
 
 <Steps>
 <Step>
-Generate two more components with v0, a "confirming order" and "order confirmed" component. Here is an [example of confirming order](https://v0.dev/r/eaUimbetV3p), and [example of order confirmed](https://v0.dev/r/2IxXsvi01N7). Add them to your project, calling them `confirming-order` and `order-confirmed` respectively.
+Let's generate two more components with v0, a "confirming order" and "order confirmed" component. We can use this [example of confirming order](https://v0.dev/r/eaUimbetV3p), and [example of order confirmed](https://v0.dev/r/2IxXsvi01N7). Add them to your project, calling them `confirming-order` and `order-confirmed` respectively.
+
+Install the "confirming order" component with the following command, naming it `ConfirmingOrder`.
+```bash
+npx v0 add AL1fs84WRpz
+```
+And install the "order confirmed" component with the following command, naming it `OrderConfirmed`.
+```bash
+npx v0 add OqTgwrPwjZb
+```
 </Step>
 <Step>
 Add a new tool to handle confirming an order.
@@ -23,7 +32,7 @@ Add a new tool to handle confirming an order.
         generate: async function* (product) {
           yield <ConfirmingOrder />;
           await new Promise((resolve) => setTimeout(resolve, 2000));
-          return <OrderConfirmed productName={product.name} />;
+          return <OrderConfirmed product={product} />;
         },
       },
     }

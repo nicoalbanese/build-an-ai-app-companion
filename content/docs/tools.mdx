@@ -14,6 +14,7 @@ Open `core/tools.ts`. You should see the following code already:
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ Define a tool called weather.
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
@@ -58,6 +60,7 @@ Provide a description for the tool.
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
@@ -89,7 +92,7 @@ Import Zod and define a Zod schema that describes the parameters necessary for t
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 import dotenv from "dotenv";
-import { z } from "zod"; // [!code highlight]
+import { z } from "zod"; 
 
 dotenv.config();
 
@@ -140,7 +143,8 @@ async function main() {
           location: z.string().describe("the user's location"),
         }),
         execute: async ({ location }) => {  // [!code highlight]
-          const temperature = Math.floor(Math.random() * 31); // await getWeather(location) // [!code highlight]
+          // await getWeather(location) // [!code highlight]
+          const temperature = Math.floor(Math.random() * 31); // [!code highlight]
           return { temperature }; // [!code highlight]
         },
       },
@@ -180,7 +184,8 @@ async function main() {
           location: z.string().describe("the user's location"),
         }),
         execute: async ({ location }) => {
-          const temperature = Math.floor(Math.random() * 31); // await getWeather(location)
+          // await getWeather(location) 
+          const temperature = Math.floor(Math.random() * 31); 
           return { temperature };
         },
       },
@@ -223,7 +228,8 @@ async function main() {
           location: z.string().describe("the user's location"),
         }),
         execute: async ({ location }) => {
-          const temperature = Math.floor(Math.random() * 31); // await getWeather(location)
+          // await getWeather(location) 
+          const temperature = Math.floor(Math.random() * 31); 
           return { temperature };
         },
       },
@@ -265,7 +271,8 @@ async function main() {
           location: z.string().describe("the user's location"),
         }),
         execute: async ({ location }) => {
-          const temperature = Math.floor(Math.random() * 31); // await getWeather(location)
+          // await getWeather(location) 
+          const temperature = Math.floor(Math.random() * 31); 
           return { temperature };
         },
       },
