@@ -26,11 +26,11 @@ export default async function Page({
   );
 }
 
-export async function generateStaticParams() {
-  return getPages().map((page) => ({
-    slug: page.slugs,
-  }));
-}
+// export async function generateStaticParams() {
+//   return getPages().map((page) => ({
+//     slug: page.slugs,
+//   }));
+// }
 
 export function generateMetadata({ params }: { params: { slug?: string[] } }) {
   const page = getPage(params.slug);

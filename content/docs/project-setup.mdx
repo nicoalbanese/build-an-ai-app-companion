@@ -5,6 +5,7 @@ description: Project Setup
 
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { OpenAIKey } from "@/app/_components/oai-key"
 
 In this session, we'll be exploring the fundamentals of the Vercel AI SDK.
 
@@ -51,7 +52,7 @@ cp .env.example .env
 <Step>
 Add your OpenAI API Key to your `.env` file.
 
-[Key](/ship-24)
+<OpenAIKey />
 </Step>
 <Step>
 Run the following command in your terminal.
