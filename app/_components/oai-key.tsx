@@ -1,7 +1,7 @@
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
 
 export async function OpenAIKey () {
-  const res = await fetch(process.env.EC_FETCH)
+  const res = await fetch(process.env.EC_FETCH ?? "")
   const {showKey, key} = await res.json()
   return (
     <CodeBlock>
