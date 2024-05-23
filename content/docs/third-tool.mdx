@@ -84,7 +84,6 @@ export function ProductCard({
       <Button 
         className="w-full"
         onClick={async () => {// [!code highlight]
-          console.log("Get product info for ", { product });// [!code highlight]
           setConversation((currentConversation: ClientMessage[]) => [// [!code highlight]
             ...currentConversation,// [!code highlight]
             {// [!code highlight]
@@ -112,7 +111,7 @@ export function ProductCard({
 ```
 </Step>
 <Step>
-Update the `<OrderConfirmed />` component to display product informaiton.
+Update the `<OrderConfirmed />` component to display product information.
 ```tsx title="components/order-confirmed.tsx"
 // REST OF CODE
 import { Card } from "@/components/ui/card"

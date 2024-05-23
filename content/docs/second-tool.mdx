@@ -151,7 +151,7 @@ Add a new tool to handle getting a specific product.
       // your other tool
       getSpecificProduct: {
         description:
-          "Select specific apple products. Use this if the user asks for more info on a product as well.",
+          "Select specific products. Use this if the user asks for more info on a product.",
         parameters: productSchema,
         generate: async function (product) {
           history.done((messages: ServerMessage[]) => [

@@ -15,7 +15,6 @@ description: Fourth Tool
           }),
         }),
         generate: async function* ({ productTwo, productOne }) {
-          console.log("calling compare function");
           yield <div>loading...</div>;
           const productSchema = z.object({
             name: z.string(),
