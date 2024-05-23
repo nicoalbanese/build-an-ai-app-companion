@@ -14,7 +14,7 @@ Create your first tool. This will be called `getProducts`.
 
 
 ```tsx title="app/actions.tsx"
-// Rest of file
+// REST OF CODE
 
   const result = await streamUI({
     model: openai("gpt-3.5-turbo"),
@@ -70,7 +70,7 @@ Create your first tool. This will be called `getProducts`.
     }
   });
 
-// Rest of file
+// REST OF CODE
 ```
 <Callout>
 Note: We are using a generator function here (`function*`), which allows you to pause its execution and return a value, then resume from where it left off on the next call. This is useful for handling data streams, as you can fetch and return data from an asynchronous source like an API, then resume the function to fetch the next chunk when needed. By yielding values one at a time, generator functions enable efficient processing of streaming data without blocking the main thread.
@@ -182,7 +182,7 @@ Go back to your Server Action and update the products schema to the one defined 
 
 
 ```tsx title="app/actions.tsx"
-// Rest of file
+// REST OF CODE
     tools: {
       getProducts: {
         description:
@@ -215,7 +215,7 @@ Go back to your Server Action and update the products schema to the one defined 
         },
       },
     }
-// Rest of file
+// REST OF CODE
 ```
 <Callout>
 Remember to import `productsSchema`!
