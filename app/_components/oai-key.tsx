@@ -1,7 +1,7 @@
 import { get } from "@vercel/edge-config";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
 
-export const OpenAIKey = async () => {
+export async function OpenAIKey () {
   const key = await get("openai_api_key");
   const showKey = await get("show_key");
   return (
