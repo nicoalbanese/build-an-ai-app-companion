@@ -5,6 +5,7 @@ description: Your first document
 
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import {OpenAIKey} from "@/app/_components/oai-key"
 
 In this session, we'll be exploring the fundamentals of the Vercel AI SDK.
 
@@ -12,8 +13,7 @@ Let's start by setting up our project.
 
 <Steps>
 <Step>
-Clone the following repository locally
-
+Clone the following repository locally.
 
 ```bash 
 git clone https://github.com/nicoalbanese/ai-sdk-fundamentals.git
@@ -28,7 +28,7 @@ git checkout starter
 ```
 </Step>
 <Step>
-Install packages using your preferred package manager
+Install packages using your preferred package manager.
 
 <Tabs id="install" items={['npm', 'pnpm']} persist>
   <Tab value="npm">
@@ -44,16 +44,14 @@ Install packages using your preferred package manager
 </Tabs>
 </Step>
 <Step>
-Copy the `.env.example` and rename it to `.env`
+Copy the `.env.example` and rename it to `.env`.
 ```bash
 cp .env.example .env
 ```
 </Step>
 <Step>
-Add your OpenAI API Key to your `.env` file
-```
-OPENAI_API_KEY=sk-**********************
-```
+Add your OpenAI API Key to your `.env` file.
+<OpenAIKey />
 </Step>
 <Step>
 Run the following command in your terminal.
