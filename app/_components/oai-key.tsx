@@ -1,13 +1,14 @@
+import { get } from "@vercel/edge-config";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
-import { headers } from "next/headers";
 
-export async function OpenAIKey () {
-  const head = headers();
-  const res = await fetch(process.env.EC_FETCH ?? "")
-  const {openai_api_key: key, show_key: showKey} = await res.json()
+export async function OpenAIKey() {
+  const key = await get<string>("openai_api_key");
+  const showKey = await get<boolean>("show_key");
   return (
     <CodeBlock>
-      <Pre className="px-4 text-[13px]">OPENAI_API_KEY={showKey ? key : "sk-*****-*************"}</Pre>
+      <Pre className="px-4 text-[13px]">
+        OPENAI_API_KEY={showKey ? key : "sk-*****-*************"}
+      </Pre>
     </CodeBlock>
   );
-};
+}
